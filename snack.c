@@ -56,8 +56,8 @@ int main( int argc, char* argv[] )
     SDL_GetWindowDisplayMode( wWindow, &dmDisplayMode ) ;
 
     rPlayArea.x = ( dmDisplayMode.w - dmDisplayMode.h  ) / 2 ;
-    rPlayArea.y = 0 ;
-    rPlayArea.h  = dmDisplayMode.h ;
+    rPlayArea.y = dmDisplayMode.h / 50 ;
+    rPlayArea.h  = dmDisplayMode.h - ( rPlayArea.y * 2 ) ;
     rPlayArea.w = dmDisplayMode.h ;
 
     whHungryWorm.rHead.x = dmDisplayMode.w / 2 ;
@@ -72,6 +72,12 @@ int main( int argc, char* argv[] )
     SDL_FillRect( srfcScreen, NULL, SDL_MapRGB( srfcScreen->format, 64, 64, 64 ) ) ;
 
     SDL_FillRect( srfcScreen, &rPlayArea, SDL_MapRGB( srfcScreen->format, 127, 72, 7 ) ) ;
+
+    // Manually setting a pixel!
+
+    Uint32* pix = (Uint32*)srfcScreen->pixels ;
+
+    pix[( 5 * srfcScreen->w ) + 5] = 0xFFFF0000 ; 
 
     //SDL_FillRect( srfcSurface, &rDisplayBounds, SDL_MapRGB( srfcSurface->format, 0, 0, 255 ) ) ;
     // Having the taskbar at top of screen, and using a maximised window, results in a loss of screen space when using
@@ -111,9 +117,9 @@ int main( int argc, char* argv[] )
 
                         whHungryWorm.rHead.y =  whHungryWorm.rHead.y + ( rPlayArea.h / 150 ) ;
             
-                        if( (  whHungryWorm.rHead.y +  whHungryWorm.rHead.h ) >= rPlayArea.h ) 
+                        if( (  whHungryWorm.rHead.y +  whHungryWorm.rHead.h ) >= rPlayArea.y + rPlayArea.h ) 
                         {
-                            whHungryWorm.rHead.y = rPlayArea.h -  whHungryWorm.rHead.h ;
+                            whHungryWorm.rHead.y = ( rPlayArea.y + rPlayArea.h ) -  whHungryWorm.rHead.h ;
                         }
 
                         break ;
